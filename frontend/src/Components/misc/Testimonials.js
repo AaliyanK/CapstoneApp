@@ -9,7 +9,7 @@ const Home = () => {
     <React.Fragment>
       <section className="content-container">
         <div className="textArea">
-          <h2>Who is Zena?</h2>
+          <h2>Who Are We?</h2>
           <p>Meet the team!</p>
         </div>
         <div className="cust-container">

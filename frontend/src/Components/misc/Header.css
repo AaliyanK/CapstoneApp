@@ -16,7 +16,7 @@ header {
 .bg-container {
   display: flex;
   justify-content: center;
-  gap: 400px;
+  gap: 700px;
 }
 
 header h1 {
