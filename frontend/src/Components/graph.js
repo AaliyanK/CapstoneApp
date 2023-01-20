@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Chart from "react-apexcharts";
 
-const Graph = () => {
+const Graph = ({ graphData }) => {
   const [chartObject, setChartObject] = useState({
     options: {
       chart: {
@@ -66,11 +66,54 @@ const Graph = () => {
 
   return (
     <div>
-      <Chart
+      {/* <Chart
         options={chartObject.options}
         series={chartObject.series}
         type={"line"}
         width="500"
+      /> */}
+      <Chart
+        type="line"
+        height={350}
+        width={500}
+        series={[
+          {
+            name: "Air Temperature",
+            data: graphData?.map((data) => data[2]),
+          },
+        ]}
+        options={{
+          chart: {
+            animations: {
+              enabled: true,
+              easing: "linear",
+              dynamicAnimation: {
+                speed: 1000,
+              },
+            },
+            toolbar: {
+              show: true,
+            },
+            zoom: {
+              enabled: true,
+            },
+          },
+          title: {
+            text: "Dynamic Updating Chart",
+            align: "left",
+          },
+          stroke: { width: 1, curve: "smooth" },
+          dataLabels: { enabled: false },
+          stroke: {
+            curve: "smooth",
+          },
+          xaxis: {
+            categories: graphData?.map((data) => data[1]),
+          },
+          yaxis: {
+            show: true,
+          },
+        }}
       />
     </div>
   );

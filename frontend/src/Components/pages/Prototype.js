@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Graph from "../graph";
 import Button from "react-bootstrap/Button";
-import { io } from "socket.io-client";
 
 const GraphWrapper = styled.div`
   display: flex;
@@ -11,20 +10,13 @@ const GraphWrapper = styled.div`
 `;
 
 const Prototype = () => {
-  const [data, setData] = useState({});
-  const [socketInstance, setSocketInstance] = useState("");
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [buttonStatus, setButtonStatus] = useState(false);
-  const [count, setCount] = useState(0);
+  const [intervalId, setIntervalId] = useState(null);
+  const [rowIndex, setRowIndex] = useState(0);
 
-  const socket = io("localhost:5000/", {
-    transports: ["websocket", "polling"],
-    cors: {
-      origin: "http://localhost:3000/",
-    },
-  });
-
-  const handleClick = () => {
+  const handleButtonStatus = () => {
     if (buttonStatus === false) {
       setButtonStatus(true);
     } else {
@@ -32,85 +24,59 @@ const Prototype = () => {
     }
   };
 
-  const onClick = () => {
-    axios.get("http://localhost:5000/all_data").then((response) => {
-      setData(response.data);
-    });
+  const fetching = () => {
+    let count = 2;
+
+    if (rowIndex > 2) {
+      count = rowIndex;
+    }
+
+    const id = setInterval(() => {
+      console.log(count);
+      axios
+        .post(`http://localhost:5000/test`, { rowIndex: count })
+        .then((response) => {
+          // If we get a response that there are no usable excel entries, break out of interval!
+          console.log(response.data);
+          count = count + 1;
+          setRowIndex(count);
+          setData((currentData) => [...currentData, response.data.data]);
+        });
+    }, 5000);
+    setIntervalId(id);
+
+    if (!data) {
+      clearInterval(id);
+    }
   };
 
-  // const buttonClick = () => {
-  //   if (buttonStatus === false) {
-  //     setButtonStatus(true);
-  //   } else {
-  //     setButtonStatus(false);
-  //   }
-  //   // To send to backend
-  //   // socket.emit("sendSheetData", { count: 1 });
-  //   setInterval(() => {
-  //     socket.emit("recieveSheetData", count);
-  //   }, [2000]);
-  // };
+  const handleRefresh = () => {
+    clearInterval(intervalId);
+    setData([]);
+    setRowIndex(2);
+    setButtonStatus(false);
+  };
 
   useEffect(() => {
-    // This will be watching messages coming from backend
-
-    if (buttonStatus === true) {
-      socket.on("getSheetData", (data) => {
-        console.log(data);
-      });
-
-      return function cleanup() {
-        socket.disconnect();
-      };
+    if (buttonStatus) {
+      fetching();
+    } else {
+      clearInterval(intervalId);
     }
-  }, [socket, buttonStatus]);
+  }, [buttonStatus]);
 
   console.log(buttonStatus);
-
-  // useEffect(() => {
-  //   if (buttonStatus === true) {
-  //     socket.on("recieveSheetData", (data) => {
-  //       setCount(count + 1);
-  //       console.log(data);
-  //     });
-  //   }
-  // }, [buttonStatus, count, setCount]);
-
-  // useEffect(() => {
-  //   if (buttonStatus === true) {
-  //     // const socket = io("localhost:5000/", {
-  //     //   transports: ["websocket", "polling"],
-  //     //   cors: {
-  //     //     origin: "http://localhost:3000/",
-  //     //   },
-  //     // });
-
-  //     setSocketInstance(socket);
-
-  //     socket.on("getSheetData", (data) => {
-  //       console.log(data);
-  //     });
-
-  //     setLoading(false);
-
-  //     socket.on("disconnect", (data) => {
-  //       console.log(data);
-  //     });
-
-  //     return function cleanup() {
-  //       socket.disconnect();
-  //     };
-  //   }
-  // }, [buttonStatus]);
+  console.log(data);
 
   return (
     <React.Fragment>
       <section className="content-container">
         <div>
           <GraphWrapper>
-            <Graph />
+            <Graph graphData={data} />
           </GraphWrapper>
-          <Button onClick={() => handleClick()}>Test</Button>
+          <Button onClick={() => handleButtonStatus()}>Get data</Button>
+          <Button onClick={() => handleRefresh()}>Refresh Graphs</Button>
         </div>
       </section>
     </React.Fragment>

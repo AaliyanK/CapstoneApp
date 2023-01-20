@@ -29,7 +29,7 @@ def create_app(env_name):
 
   socketio = SocketIO(app, cors_allowed_origins="*")
 
-  @app.route('/', methods=['GET'])
+  @app.route('/test', methods=['GET'])
   def index():
     """
     example endpoint
