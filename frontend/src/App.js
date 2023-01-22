@@ -1,10 +1,10 @@
 import "./App.css";
-import Prototype from "./Components/pages/Prototype";
+import Prototype from "./components/pages/Prototype";
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Layout from "./layout/Layout";
-import Home from "./Components/pages/Home";
-import AboutUs from "./Components/pages/AboutUs";
+import Home from "./components/pages/Home";
+import AboutUs from "./components/pages/AboutUs";
 
 function App() {
   return (

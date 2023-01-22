@@ -1,117 +1,114 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useEffect } from "react";
 import Chart from "react-apexcharts";
+import ApexCharts from "apexcharts";
 
 const Graph = ({ graphData }) => {
-  const [chartObject, setChartObject] = useState({
-    options: {
-      chart: {
-        id: "realtime",
-        height: 350,
-        type: "line",
-        animations: {
-          enabled: true,
-          easing: "linear",
-          dynamicAnimation: {
-            speed: 1000,
-          },
-        },
-        toolbar: {
-          show: true,
-        },
-        zoom: {
-          enabled: true,
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: "smooth",
-      },
-      title: {
-        text: "Dynamic Updating Chart",
-        align: "left",
-      },
-      markers: {
-        size: 0,
-      },
-      xaxis: {
-        categories: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-        ],
-      },
-      yaxis: {
-        max: 100,
-      },
-      legend: {
-        show: false,
-      },
-    },
-    series: [
-      {
-        name: "series-1",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
-      },
-    ],
-  });
+  useEffect(() => {
+    const chart = ApexCharts.getChartByID("mainChart");
+    chart.hideSeries("Air Temperature");
+    chart.hideSeries("Inlet Temperature");
+    chart.hideSeries("Flow Meter");
+    chart.hideSeries("Current_1");
+    chart.hideSeries("Current_2");
+    chart.hideSeries("Current_3");
+    chart.hideSeries("Total Flowrate");
+    chart.hideSeries("Moving Average");
+    chart.hideSeries("Growth State");
+  }, [graphData]);
 
   return (
     <div>
-      {/* <Chart
-        options={chartObject.options}
-        series={chartObject.series}
-        type={"line"}
-        width="500"
-      /> */}
       <Chart
         type="line"
-        height={350}
-        width={500}
+        height={650}
+        width={900}
         series={[
+          {
+            name: "Cell Density",
+            data: graphData?.map((data) => data[2]),
+            // CHANGE THIS TO BE CELL DENSITY DATA, will change the data[2]
+          },
           {
             name: "Air Temperature",
             data: graphData?.map((data) => data[2]),
           },
+          {
+            name: "Inlet Temperature",
+            data: graphData?.map((data) => data[3]),
+          },
+          {
+            name: "Flow Meter",
+            data: graphData?.map((data) => data[4]),
+          },
+          {
+            name: "Current_1",
+            data: graphData?.map((data) => data[5]),
+          },
+          {
+            name: "Current_2",
+            data: graphData?.map((data) => data[6]),
+          },
+          {
+            name: "Current_3",
+            data: graphData?.map((data) => data[7]),
+          },
+          {
+            name: "Total Flowrate",
+            data: graphData?.map((data) => data[8]),
+          },
+          {
+            name: "Moving Average",
+            data: graphData?.map((data) => data[9]),
+          },
+          {
+            name: "Growth State",
+            data: graphData?.map((data) => data[10]),
+          },
         ]}
         options={{
           chart: {
+            id: "mainChart",
             animations: {
               enabled: true,
               easing: "linear",
               dynamicAnimation: {
+                enabled: true,
                 speed: 1000,
               },
             },
             toolbar: {
               show: true,
+              export: {
+                csv: {
+                  headerCategory: "Time",
+                },
+              },
             },
             zoom: {
               enabled: true,
             },
           },
           title: {
-            text: "Dynamic Updating Chart",
-            align: "left",
+            text: "Cell Density vs Time",
+            align: "center",
           },
           stroke: { width: 1, curve: "smooth" },
           dataLabels: { enabled: false },
-          stroke: {
-            curve: "smooth",
-          },
           xaxis: {
             categories: graphData?.map((data) => data[1]),
+            title: {
+              text: "Time",
+            },
+          },
+          legend: {
+            showForSingleSeries: true,
+            show: true,
           },
           yaxis: {
             show: true,
+            title: {
+              text: "Cell Density",
+            },
           },
         }}
       />

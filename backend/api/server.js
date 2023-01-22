@@ -41,11 +41,14 @@ app.post("/test", (req, res) => {
     range: `Sheet1!A${req.body.rowIndex}:N${req.body.rowIndex}`, //Update for sheets
   });
 
+  // TODO:
+  // Need to only display cell density. Once adrian finished, I will update code
+
   rows.then((result) => {
     if (result.data.values) {
       res.json({ data: result.data.values[0] });
     } else {
-      res.json(); // Send back response that there are no usable excel entries anymore!
+      res.json({ data: [] }); // Send back response that there are no usable excel entries anymore!
     }
   });
 });

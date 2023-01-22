@@ -2,25 +2,44 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Graph from "../graph";
+import MyCard from "../card";
+import { ProgressBar } from "react-loader-spinner";
 import Button from "react-bootstrap/Button";
 
 const GraphWrapper = styled.div`
   display: flex;
   justify-content: center;
+  gap: 50px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-right: 400px;
+`;
+
+const GraphButtonWrapper = styled.div`
+  margin-top: 100px;
 `;
 
 const Prototype = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [buttonStatus, setButtonStatus] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const [rowIndex, setRowIndex] = useState(0);
+  const [buttonText, setButtonText] = useState("Get Data");
 
   const handleButtonStatus = () => {
     if (buttonStatus === false) {
       setButtonStatus(true);
     } else {
       setButtonStatus(false);
+      clearInterval(intervalId);
     }
   };
 
@@ -36,18 +55,14 @@ const Prototype = () => {
       axios
         .post(`http://localhost:5000/test`, { rowIndex: count })
         .then((response) => {
-          // If we get a response that there are no usable excel entries, break out of interval!
-          console.log(response.data);
-          count = count + 1;
-          setRowIndex(count);
-          setData((currentData) => [...currentData, response.data.data]);
+          if (response.data.data.length !== 0) {
+            count = count + 1;
+            setRowIndex(count);
+            setData((currentData) => [...currentData, response.data.data]);
+          }
         });
-    }, 5000);
+    }, 30000);
     setIntervalId(id);
-
-    if (!data) {
-      clearInterval(id);
-    }
   };
 
   const handleRefresh = () => {
@@ -59,26 +74,50 @@ const Prototype = () => {
 
   useEffect(() => {
     if (buttonStatus) {
+      setLoading(true);
       fetching();
     } else {
+      setLoading(false);
       clearInterval(intervalId);
     }
   }, [buttonStatus]);
 
-  console.log(buttonStatus);
+  useEffect(() => {
+    if (loading) {
+      setButtonText("Finish Data Collection");
+    }
+
+    if (data.length && !loading) {
+      setButtonText("Continue Data Collection");
+    }
+
+    if (!data.length && !loading) {
+      setButtonText("Get Data");
+    }
+  }, [data, loading]);
+
   console.log(data);
 
   return (
     <React.Fragment>
-      <section className="content-container">
-        <div>
-          <GraphWrapper>
-            <Graph graphData={data} />
-          </GraphWrapper>
-          <Button onClick={() => handleButtonStatus()}>Get data</Button>
-          <Button onClick={() => handleRefresh()}>Refresh Graphs</Button>
-        </div>
-      </section>
+      <GraphButtonWrapper>
+        <GraphWrapper>
+          <Graph graphData={data} />
+          <MyCard data={data} />
+        </GraphWrapper>
+        <ButtonWrapper>
+          <Button onClick={() => handleButtonStatus()}>{buttonText}</Button>
+          <Button onClick={() => handleRefresh()}>Refresh Graph</Button>
+          {loading && (
+            <ProgressBar
+              height="60"
+              width="60"
+              borderColor="Black"
+              barColor="Blue"
+            />
+          )}
+        </ButtonWrapper>
+      </GraphButtonWrapper>
     </React.Fragment>
   );
 };
