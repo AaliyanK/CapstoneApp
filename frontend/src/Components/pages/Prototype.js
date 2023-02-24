@@ -51,17 +51,17 @@ const Prototype = () => {
     }
 
     const id = setInterval(() => {
-      console.log(count);
       axios
         .post(`http://localhost:5000/test`, { rowIndex: count })
         .then((response) => {
           if (response.data.data.length !== 0) {
-            count = count + 1;
+            count = count + 1; //remove this?
             setRowIndex(count);
-            setData((currentData) => [...currentData, response.data.data]);
+            // setData((currentData) => [...currentData, response.data.data]);
+            setData(response.data.data);
           }
         });
-    }, 30000);
+    }, 5000);
     setIntervalId(id);
   };
 
@@ -96,7 +96,7 @@ const Prototype = () => {
     }
   }, [data, loading]);
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <React.Fragment>
