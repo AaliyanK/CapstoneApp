@@ -27,40 +27,40 @@ const MyCard = ({ data }) => {
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
-            <strong>Air Temperature: </strong>
-            {!lastItem.length || !lastItem[2] ? "None" : lastItem[2]}
+            <strong>Air Temperature (°C): </strong>
+            {!lastItem.length || !lastItem[2] ? "None" : lastItem[3]}
           </li>
           <li class="list-group-item">
-            <strong>Inlet Temperature:</strong>{" "}
-            {!lastItem.length || !lastItem[3] ? "None" : lastItem[3]}
+            <strong>Cooling Jacket Temperature (°C):</strong>{" "}
+            {!lastItem.length || !lastItem[3] ? "None" : lastItem[4]}
           </li>
           <li class="list-group-item">
-            <strong>Flow Meter:</strong>{" "}
-            {!lastItem.length || !lastItem[4] ? "None" : lastItem[4]}
+            <strong>Cooling Rate (Liters/Minute):</strong>{" "}
+            {!lastItem.length || !lastItem[4] ? "None" : lastItem[5]}
           </li>
           <li class="list-group-item">
-            <strong>Current_1:</strong>{" "}
-            {!lastItem.length || !lastItem[5] ? "None" : lastItem[5]}
+            <strong>Cooling_line_1:</strong>{" "}
+            {!lastItem.length || !lastItem[5] ? "None" : lastItem[6]}
           </li>
           <li class="list-group-item">
-            <strong>Current_2:</strong>{" "}
-            {!lastItem.length || !lastItem[6] ? "None" : lastItem[6]}
+            <strong>Cooling_line_2:</strong>{" "}
+            {!lastItem.length || !lastItem[6] ? "None" : lastItem[7]}
           </li>
           <li class="list-group-item">
-            <strong>Current_3:</strong>{" "}
-            {!lastItem.length || !lastItem[7] ? "None" : lastItem[7]}
+            <strong>Cooling_line_3:</strong>{" "}
+            {!lastItem.length || !lastItem[7] ? "None" : lastItem[8]}
           </li>
           <li class="list-group-item">
-            <strong>Total Flowrate:</strong>{" "}
-            {!lastItem.length || !lastItem[8] ? "None" : lastItem[8]}
+            <strong>Total Flowrate (Liters):</strong>{" "}
+            {!lastItem.length || !lastItem[8] ? "None" : lastItem[9]}
           </li>
           <li class="list-group-item">
-            <strong>Moving Average:</strong>{" "}
-            {!lastItem.length || !lastItem[9] ? "None" : lastItem[9]}
+            <strong>Moving Average (Liters):</strong>{" "}
+            {!lastItem.length || !lastItem[9] ? "None" : lastItem[10]}
           </li>
           <li class="list-group-item">
             <strong>Growth State:</strong>{" "}
-            {!lastItem.length || !lastItem[10] ? "None" : lastItem[10]}
+            {!lastItem.length || !lastItem[10] ? "None" : lastItem[11]}
           </li>
         </ul>
       </div>

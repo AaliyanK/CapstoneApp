@@ -5,15 +5,15 @@ import ApexCharts from "apexcharts";
 const Graph = ({ graphData }) => {
   useEffect(() => {
     const chart = ApexCharts.getChartByID("mainChart");
-    chart.hideSeries("Air Temperature");
-    chart.hideSeries("Inlet Temperature");
-    chart.hideSeries("Flow Meter");
-    chart.hideSeries("Current_1");
-    chart.hideSeries("Current_2");
-    chart.hideSeries("Current_3");
-    chart.hideSeries("Total Flowrate");
-    chart.hideSeries("Moving Average");
-    chart.hideSeries("Growth State");
+    // chart.hideSeries("Air Temperature");
+    // chart.hideSeries("Inlet Temperature");
+    // chart.hideSeries("Flow Meter");
+    // chart.hideSeries("Cooling_line_1");
+    // chart.hideSeries("Cooling_line_2");
+    // chart.hideSeries("Cooling_line_3");
+    // chart.hideSeries("Total Flowrate");
+    // chart.hideSeries("Moving Average");
+    // chart.hideSeries("Growth State");
   }, [graphData]);
 
   return (
@@ -26,44 +26,43 @@ const Graph = ({ graphData }) => {
           {
             name: "Cell Density",
             data: graphData?.map((data) => data[2]),
-            // CHANGE THIS TO BE CELL DENSITY DATA, will change the data[2]
           },
-          {
-            name: "Air Temperature",
-            data: graphData?.map((data) => data[2]),
-          },
-          {
-            name: "Inlet Temperature",
-            data: graphData?.map((data) => data[3]),
-          },
-          {
-            name: "Flow Meter",
-            data: graphData?.map((data) => data[4]),
-          },
-          {
-            name: "Current_1",
-            data: graphData?.map((data) => data[5]),
-          },
-          {
-            name: "Current_2",
-            data: graphData?.map((data) => data[6]),
-          },
-          {
-            name: "Current_3",
-            data: graphData?.map((data) => data[7]),
-          },
-          {
-            name: "Total Flowrate",
-            data: graphData?.map((data) => data[8]),
-          },
-          {
-            name: "Moving Average",
-            data: graphData?.map((data) => data[9]),
-          },
-          {
-            name: "Growth State",
-            data: graphData?.map((data) => data[10]),
-          },
+          // {
+          //   name: "Air Temperature",
+          //   data: graphData?.map((data) => data[3]),
+          // },
+          // {
+          //   name: "Inlet Temperature",
+          //   data: graphData?.map((data) => data[4]),
+          // },
+          // {
+          //   name: "Flow Meter",
+          //   data: graphData?.map((data) => data[5]),
+          // },
+          // {
+          //   name: "Cooling_line_1",
+          //   data: graphData?.map((data) => data[6]),
+          // },
+          // {
+          //   name: "Cooling_line_2",
+          //   data: graphData?.map((data) => data[7]),
+          // },
+          // {
+          //   name: "Cooling_line_3",
+          //   data: graphData?.map((data) => data[8]),
+          // },
+          // {
+          //   name: "Total Flowrate",
+          //   data: graphData?.map((data) => data[9]),
+          // },
+          // {
+          //   name: "Moving Average",
+          //   data: graphData?.map((data) => data[10]),
+          // },
+          // {
+          //   name: "Growth State",
+          //   data: graphData?.map((data) => data[11]),
+          // },
         ]}
         options={{
           chart: {
@@ -93,12 +92,12 @@ const Graph = ({ graphData }) => {
             align: "center",
           },
           stroke: { width: 1, curve: "smooth" },
-          dataLabels: { enabled: false },
           xaxis: {
             categories: graphData?.map((data) => data[1]),
             title: {
               text: "Time",
             },
+            tickAmount: 10,
           },
           legend: {
             showForSingleSeries: true,
@@ -107,7 +106,12 @@ const Graph = ({ graphData }) => {
           yaxis: {
             show: true,
             title: {
-              text: "Cell Density",
+              text: "Cell Density (Cells/Liter)",
+            },
+            labels: {
+              formatter: function (value) {
+                return value.toExponential();
+              },
             },
           },
         }}

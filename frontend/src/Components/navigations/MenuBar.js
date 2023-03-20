@@ -1,5 +1,5 @@
 import React from "react";
-
+import logo from "../../images/zena_logo.png";
 import "./MenuBar.css";
 
 const MenuBar = () => {
@@ -7,7 +7,11 @@ const MenuBar = () => {
     <nav className="header">
       <div className="nav-wrapper">
         <a className="logo" href="/">
-          Zena
+          <img
+            src={logo}
+            alt="logo"
+            style={{ width: "65px", marginRight: "20px" }}
+          />
         </a>
         <input className="menu-btn" type="checkbox" id="menu-btn" />
         <label className="menu-icon" htmlFor="menu-btn">

@@ -57,11 +57,11 @@ const Prototype = () => {
           if (response.data.data.length !== 0) {
             count = count + 1; //remove this?
             setRowIndex(count);
-            // setData((currentData) => [...currentData, response.data.data]);
-            setData(response.data.data);
+            setData((currentData) => [...currentData, response.data.data]);
+            // setData(response.data.data); FOR MULTIPLE VALUES
           }
         });
-    }, 5000);
+    }, 5000); //this works, we can change it to 10 seconds
     setIntervalId(id);
   };
 

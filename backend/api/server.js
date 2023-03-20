@@ -39,28 +39,26 @@ app.post("/test", (req, res) => {
   const response = googleSheetsInstance.spreadsheets.values.get({
     auth, //auth object
     spreadsheetId, // spreadsheet id
-    // range: `Sheet1!A${req.body.rowIndex}:N${req.body.rowIndex}`, //Update for sheets
-    range: `Sheet1!A2:K`, // May need to change SHEET name manually
+    range: `Sheet1!A${req.body.rowIndex}:N${req.body.rowIndex}`, //Update for sheets
+    // range: `Sheet1!A2:K`, // FOR PROD, to get all values at once, if theres only one value present, dont worry, itll only take a single value
   });
-
-  // TODO:
-  // Need to only display cell density. Once adrian finished, I will update code
 
   response.then((result) => {
     if (result.data.values) {
-      const rows = result.data.values;
+      // const rows = result.data.values;
 
-      const nonEmptyRows = rows.filter((row) =>
-        row.some((cell) => cell !== "")
-      );
+      // FOR PROD - take all values at once
+      // const nonEmptyRows = rows.filter((row) =>
+      //   row.some((cell) => cell !== "")
+      // );
+      // const slicedRows = nonEmptyRows.slice(-500);
+      // console.log(slicedRows.length);
+      // res.json({ data: slicedRows });
 
-      const slicedRows = nonEmptyRows.slice(-500);
+      // FOR DEMO
+      console.log(result.data.values[0]);
 
-      console.log(slicedRows.length);
-
-      res.json({ data: slicedRows });
-
-      // res.json({ data: result.data.values[0] });
+      res.json({ data: result.data.values[0] });
     } else {
       res.json({ data: [] }); // Send back response that there are no usable excel entries anymore!
     }
